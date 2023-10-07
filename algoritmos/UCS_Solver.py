@@ -1,29 +1,26 @@
-import numpy as np
 from puzzle_tree import Node
-import heapq
+from queue import PriorityQueue
 
 def ucs(puzzle):
-    visited = set() 
-    fila = []
-    root = Node(puzzle.initial_state)
+    initial_node = Node(puzzle.initial_state)
 
-    heapq.heappush(fila, (0, root)) # Adiciona o nó raiz à fila de prioridade com custo 0
+    if puzzle.is_goal_state(puzzle.initial_state):
+        return [puzzle.initial_state]
 
-    while fila:
-        cost, current_node = heapq.heappop(fila)  # Remove o nó com menor custo da fila de prioridade
+    visited = set()
+    priority_queue = PriorityQueue()
+    priority_queue.put((0, initial_node))
 
-        if np.array_equal(current_node.state, puzzle.goal_state):
+    while not priority_queue.empty():
+        cost, current_node = priority_queue.get()
+        visited.add(tuple(map(tuple, current_node.state)))
+
+        if puzzle.is_goal_state(current_node.state):
             return current_node.get_solution_path()
 
-        visited.add(tuple(current_node.state.ravel()))  # Adiciona o estado atual ao conjunto de nós explorados
-        children = current_node.generate_children()
+        for child in current_node.generate_children():
+            child_state_tuple = tuple(map(tuple, child.state))
+            if child_state_tuple not in visited:
+                priority_queue.put((child.cost, child))
 
-        for child in children:
-            # Verifica se o filho não foi explorado ainda
-            if tuple(child.state.ravel()) not in visited:
-                # Calcula o custo total do caminho até o filho
-                total_cost = child.cost + cost
-
-                # Adiciona o filho à fila de prioridade com o custo total
-                heapq.heappush(fila, (total_cost, child))
     return None

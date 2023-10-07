@@ -1,28 +1,47 @@
-import numpy as np
-from puzzle_tree import Node
-
-def heuristic(state, goal_state):
-    # Heurística: número de peças fora do lugar
-    return np.sum(state != goal_state)
+import random
 
 def hill(puzzle):
-    k = 10
-    current_node = Node(puzzle.initial_state)
-    while k > 0:
-        children = current_node.generate_children()
-        if not children:
-            break
+    current_state = puzzle.initial_state
+    current_cost = h(puzzle, current_state)
 
-        children.sort(key=lambda node: heuristic(node.state, puzzle.goal_state))
-        best_child = children[0]
+    for _ in range(k):
+        neighbors = get_neighbors(puzzle, current_state)
+        if not neighbors:
+            break  # No more neighbors to explore
 
-        if heuristic(best_child.state, puzzle.goal_state) >= heuristic(current_node.state, puzzle.goal_state):
-            break
+        best_neighbor = min(neighbors, key=lambda x: h(puzzle, x))
+        best_neighbor_cost = h(puzzle, best_neighbor)
 
-        current_node = best_child
-        k -= 1
+        if best_neighbor_cost >= current_cost:
+            break  # Local minimum, stop hill climbing
 
-    if np.array_equal(current_node.state, puzzle.goal_state):
-        return current_node.get_solution_path()
+        current_state = best_neighbor
+        current_cost = best_neighbor_cost
+
+    if puzzle.is_goal_state(current_state):
+        return puzzle.get_solution_path()
     else:
         return None
+
+def h(puzzle, state):
+    # This is a simple heuristic function that counts the number of misplaced tiles
+    h_value = 0
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] != puzzle.goal_state[i][j]:
+                h_value += 1
+    return h_value
+
+def get_neighbors(puzzle, state):
+    empty_row, empty_col = puzzle.find_empty_position(state)
+    moves = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+    neighbors = []
+
+    for move in moves:
+        new_row, new_col = empty_row + move[0], empty_col + move[1]
+        if puzzle.is_valid_move(new_row, new_col):
+            neighbor_state = puzzle.swap(state, empty_row, empty_col, new_row, new_col)
+            neighbors.append(neighbor_state)
+
+    random.shuffle(neighbors)  # Shuffle the order of neighbors for randomness
+    return neighbors
