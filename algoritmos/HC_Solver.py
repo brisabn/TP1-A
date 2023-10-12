@@ -8,6 +8,7 @@ def hill(puzzle):
     k = 1000
     current_node = Node(puzzle.initial_state)
     lateral_moves_count = 0 
+    path = [current_node.state]  # Inicializa a lista de caminho com o estado inicial
 
     while lateral_moves_count < k:
         children = current_node.generate_children()  
@@ -33,11 +34,12 @@ def hill(puzzle):
         if lateral_move:
             lateral_moves_count += 1
 
-        # atualizamos o nó atual para o melhor filho
+        # atualizamos o nó atual para o melhor filho e adicionamos o estado ao caminho
         current_node = best_child
+        path.append(current_node.state)
 
     if current_node.state == puzzle.goal_state:
-        return current_node.get_solution_path()
+        return path  # Retorna o caminho percorrido
     else:
-        return None 
-    
+        return path  # Retorna o caminho até onde chegou
+

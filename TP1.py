@@ -19,7 +19,7 @@ if __name__ == "__main__":
         print("Escolha de algoritmo inválida.")
         sys.exit(1)
 
-    # Verificando se "PRINT" está presente na linha de comando
+    # Verifique se "PRINT" está presente na linha de comando
     print_enabled = len(sys.argv) == 12 and sys.argv[11].upper() == "PRINT"
 
     # Puzzle recebido
@@ -56,8 +56,8 @@ if __name__ == "__main__":
 
     # Resultado
     if solution:
-        print("Solução encontrada em", puzzle.count_steps(solution), "passos")
+        print(puzzle.count_steps(solution))
         if print_enabled:
             puzzle.print_steps(solution)
     else:
-        print("Nenhuma solução encontrada.")
+        print("O path de solução não foi encontrado")

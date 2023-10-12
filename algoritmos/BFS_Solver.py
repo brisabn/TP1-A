@@ -14,10 +14,12 @@ def bfs(puzzle):
         current_node = queue.popleft()
         visited.add(tuple(map(tuple, current_node.state)))
 
+        # gerar todos os filhos do nó atual
         for child in current_node.generate_children():
             if tuple(map(tuple, child.state)) not in visited:
                 if puzzle.is_goal_state(child.state):
                     return child.get_solution_path()
+                # caso contrário, adicionar o filho à fila para explorar
                 queue.append(child)
 
     return None

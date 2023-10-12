@@ -67,11 +67,14 @@ class EightPuzzle:
         for row in state:
             row_str = ' '.join(' ' if cell == 0 else str(cell) for cell in row)
             print(row_str)
-
+        
     def print_steps(self, solution):
-        if solution:
-            current_state = [list(row) for row in self.initial_state]
-            for state in solution:
-                self.print_state(current_state)
-                current_state = [list(row) for row in state]
-                print() 
+        self.print_state(self.initial_state)
+        print()
+
+        for state in solution[1:]:
+            self.print_state(state)
+            print()
+
+        if not self.is_goal_state(solution[-1]):
+            print("O path não atingiu a solução do estado objetivo.")
