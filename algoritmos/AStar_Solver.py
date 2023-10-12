@@ -20,7 +20,7 @@ def astar(puzzle):
 
     visited = set()
     priority_queue = PriorityQueue()
-    priority_queue.put((0, initial_node))  # Inicialmente, a prioridade é 0
+    priority_queue.put((0, initial_node))  # inicialmente, a prioridade é 0
 
     while not priority_queue.empty():
         _, current_node = priority_queue.get()

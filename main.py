@@ -1,5 +1,4 @@
 import sys
-import timeit
 from puzzle_tree import EightPuzzle
 from algoritmos.BFS_Solver import bfs
 from algoritmos.IDS_Solver import ids
@@ -20,7 +19,7 @@ if __name__ == "__main__":
         print("Escolha de algoritmo inválida.")
         sys.exit(1)
 
-    # Verifique se "PRINT" está presente na linha de comando
+    # Verificando se "PRINT" está presente na linha de comando
     print_enabled = len(sys.argv) == 12 and sys.argv[11].upper() == "PRINT"
 
     # Puzzle recebido
@@ -31,40 +30,34 @@ if __name__ == "__main__":
     if len(numbers) != 9:
         print("Você deve fornecer exatamente 9 números.")
         sys.exit(1)
-    
+
+    # Verificando se os números são diferentes
+    if len(numbers) != len(set(numbers)):
+        print("Os números devem ser diferentes.")
+        sys.exit(1)
+
     # Criação do Puzzle
     initial_state = [numbers[:3], numbers[3:6], numbers[6:]]
     puzzle = EightPuzzle(initial_state)
-
-    # Função para medir o tempo de execução do algoritmo
-    def measure_execution_time():
-        start_time = timeit.default_timer()
-        if algorithm_choice == 'B':
-            solution = bfs(puzzle)
-        elif algorithm_choice == 'H':
-            solution = hill(puzzle)
-        elif algorithm_choice == 'I':
-            solution = ids(puzzle)
-        elif algorithm_choice == 'U':
-            solution = ucs(puzzle)
-        elif algorithm_choice == 'A':
-            solution = astar(puzzle)
-        elif algorithm_choice == 'G':
-            solution = gbf(puzzle)
-        end_time = timeit.default_timer()
-        return solution, end_time - start_time
-
-    # Medir o tempo de execução
-    solution, execution_time = measure_execution_time()
+    
+    # Execução da solução do Algoritmo
+    if algorithm_choice == 'B':
+        solution = bfs(puzzle)
+    elif algorithm_choice == 'H':
+        solution = hill(puzzle)
+    elif algorithm_choice == 'I':
+        solution = ids(puzzle)
+    elif algorithm_choice == 'U':
+        solution = ucs(puzzle)
+    elif algorithm_choice == 'A':
+        solution = astar(puzzle)
+    elif algorithm_choice == 'G':
+        solution = gbf(puzzle)
 
     # Resultado
     if solution:
         print("Solução encontrada em", puzzle.count_steps(solution), "passos")
         if print_enabled:
             puzzle.print_steps(solution)
-        
-        # Imprimir o tempo de execução no arquivo de texto existente (modo 'a' para append)
-        with open("tempo_bfs.txt", "a") as file:
-            file.write("{:.6f}\n".format(execution_time))
     else:
         print("Nenhuma solução encontrada.")

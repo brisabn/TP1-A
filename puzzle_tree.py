@@ -5,7 +5,7 @@ class Node:
         self.action = action
         self.cost = cost
 
-    def __lt__(self, other):  # Used in Uniform Cost Search
+    def __lt__(self, other):  # usado no Uniform Cost Search
         return self.cost < other.cost
 
     def get_solution_path(self):
@@ -25,7 +25,7 @@ class Node:
             new_row, new_col = empty_row + move[0], empty_col + move[1]
             if self.is_valid_move(new_row, new_col):
                 new_state = self.swap(empty_row, empty_col, new_row, new_col)
-                cost = self.cost + 1  # Increment the cost when moving to the new state
+                cost = self.cost + 1  # incrementa o custo quando vai para outro estado
                 children.append(Node(new_state, self, move, cost))
 
         return children
@@ -46,8 +46,8 @@ class Node:
 
 
 class EightPuzzle:
+    # colocar nodo como um atributo do puzzle?
     def __init__(self, initial_state):
-        # Define the goal state
         self.goal_state = [[1, 2, 3],
                            [4, 5, 6],
                            [7, 8, 0]]
@@ -64,9 +64,9 @@ class EightPuzzle:
         return len(solution)-1 if solution else 0
 
     def print_state(self, state):
-        # Function to print the puzzle state
         for row in state:
-            print(' '.join(map(str, row)))
+            row_str = ' '.join(' ' if cell == 0 else str(cell) for cell in row)
+            print(row_str)
 
     def print_steps(self, solution):
         if solution:
@@ -74,4 +74,4 @@ class EightPuzzle:
             for state in solution:
                 self.print_state(current_state)
                 current_state = [list(row) for row in state]
-                print()  # Add a blank line after each state
+                print() 
