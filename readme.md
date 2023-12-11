@@ -15,9 +15,9 @@ Cada parâmetro corresponde:
 Verifica se exatamente 9 números (peças) foram fornecidos e sejam diferentes uns dos outros, caso contrário, o programa exibirá uma mensagem de erro apropriada.
 
 ## ｡₊⊹⭒˚｡⋆Exemplo de uso
-𖤐 Executa o A* Search e imprime os passos até a solução
+𖤐 Executa o Breadth-First Search e imprime os passos até a solução
 ```
-python main.py A 1 5 2 4 0 3 7 8 6 PRINT
+python main.py B 1 5 2 4 0 3 7 8 6 PRINT
 ```
 <p align="center">
   <img src="https://github.com/brisabn/TP1-IAI/assets/103007463/64fdab8b-40c9-49a4-abb3-6cc8f8180d8a)"http://some_place.com/image.png" />
